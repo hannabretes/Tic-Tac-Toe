@@ -95,7 +95,7 @@ class KolkoiKrzyzyk:
         if (self.sprawdzWygrana(znak) == True):
             print("Wygrał gracz: ", znak)
             exit()
-        self.zapiszDoPliku(self.tablica, )
+        self.zapiszDoPliku(self.tablica)
 
     def podmienZnakNaTablicy(self, x, znak):
         self.tablica[x] = znak
