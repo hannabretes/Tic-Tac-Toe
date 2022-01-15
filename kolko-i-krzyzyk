@@ -1,0 +1,133 @@
+import pygame, sys, random
+from pygame.locals import *
+
+pygame.init()
+OKNOGRY = pygame.display.set_mode((400, 400), 0, 32)
+pygame.display.set_caption('Kółko i krzyżyk')
+
+class KolkoiKrzyzyk:
+
+    def __init__(self):
+        self.tablica = 10 * ["*"]
+        self.plansza = """
+        ___________
+       |   |   |   |
+       | 7 | 8 | 9 |
+       |___|___|___|
+       |   |   |   |
+       | 4 | 5 | 6 |
+       |___|___|___|
+       |   |   |   |
+       | 1 | 2 | 3 |
+       |___|___|___|
+        """
+
+    def zapiszDoPliku(self, kolkoIkrzyzk):
+        plik = open("C:/Users/brete/Desktop/python/zadania/kolkoIkrzyzk.txt", "a")
+        plik.write(self.plansza)
+        plik.write("\n")
+        plik.close()
+
+    def wybierzZnakDlaGracza(self):
+        gracz1 = input("Wybierz znak gracza X lub O: ")
+        while True:
+            if gracz1.upper() == "X":
+                gracz2 = "O"
+                print("Twój gracz to X, a gracza2 to O")
+                return gracz1.upper(), gracz2
+            elif gracz1.upper() == "O":
+                gracz2 = "X"
+                print("Twój gracz to O, a gracza2 to X")
+                return gracz1.upper(), gracz2
+            else:
+                input("Wybierz znak gracza X lub O: ")
+
+    def wydrukujPlansze(self,tablica):
+        for i in range(1, 10):
+            if (tablica[i] == "X" or tablica[i]=="O"):
+                self.plansza = self.plansza.replace(str(i), tablica[i])
+            else:
+                pass
+
+        print(self.plansza)
+
+    def sprawdzWygrana(self, znak):
+        if (self.tablica[1] == znak and self.tablica[2] == znak and self.tablica[3] == znak):
+            return True
+
+        if (self.tablica[4] == znak and self.tablica[5] == znak and self.tablica[6] == znak):
+            return True
+
+        if (self.tablica[7] == znak and self.tablica[8] == znak and self.tablica[9] == znak):
+            return True
+
+        if (self.tablica[1] == znak and self.tablica[4] == znak and self.tablica[7] == znak):
+            return True
+
+        if (self.tablica[2] == znak and self.tablica[5] == znak and self.tablica[8] == znak):
+            return True
+
+        if (self.tablica[3] == znak and self.tablica[6] == znak and self.tablica[9] == znak):
+            return True
+
+        if (self.tablica[1] == znak and self.tablica[5] == znak and self.tablica[9] == znak):
+            return True
+
+        if (self.tablica[3] == znak and self.tablica[5] == znak and self.tablica[7] == znak):
+            return True
+
+        return False
+
+
+    def wprowadzNumerPola(self, znak):
+        x = 0
+        while x not in range(1, 10):
+            x = int(input("Wybierz numer pola: "))
+
+        self.wstawZnakNaPlanszy(x, znak)
+
+    def wstawZnakNaPlanszy(self, x, znak):
+
+        if (self.sprawdzCzyPoleZajete(x) == True):
+            self.wprowadzNumerPola(znak)
+        self.podmienZnakNaTablicy(x, znak)
+        self.wydrukujPlansze(self.tablica)
+        if (self.sprawdzWygrana(znak) == True):
+            print("Wygrał gracz: ", znak)
+            exit()
+        self.zapiszDoPliku(self.tablica, )
+
+    def podmienZnakNaTablicy(self, x, znak):
+        self.tablica[x] = znak
+        #jesli x = 2, znak = "X" to do pola o indeksie 2 w tablicy przypiszemy "X"
+
+
+    def sprawdzCzyPoleZajete(self, x):
+        if (self.tablica[x] != "*"):
+            print('To pole jest zajete!!!!')
+            return True
+        return False
+
+    def czyWszystkiePolaZajete(self):
+        return len([x for x in self.tablica if x == '*']) == 1
+
+
+if __name__ == "__main__": #metoda systemowa
+    gra = KolkoiKrzyzyk()
+    print("Witamy w najlepszej grze kolko i krzyzyk!")
+    #ruch parzysty = gracz 1
+    #ruch nieprarzysty = gracz 2
+    i = 1
+    gracze = gra.wybierzZnakDlaGracza()
+    #print(gracze)
+    while True:
+        czyRemis = gra.czyWszystkiePolaZajete()
+        while not czyRemis:
+            if i % 2 != 0:
+                znak = gracze[0]
+            else:
+                znak = gracze[1]
+            gra.wprowadzNumerPola(znak)
+            i += 1
+            czyRemis =gra.czyWszystkiePolaZajete()
+        print('Remi! Nikt nie wygral')
