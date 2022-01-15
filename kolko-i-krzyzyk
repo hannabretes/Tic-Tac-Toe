@@ -115,8 +115,8 @@ class KolkoiKrzyzyk:
 if __name__ == "__main__": #metoda systemowa
     gra = KolkoiKrzyzyk()
     print("Witamy w najlepszej grze kolko i krzyzyk!")
-    #ruch parzysty = gracz 1
-    #ruch nieprarzysty = gracz 2
+    #ruch nieparzysty = gracz 1
+    #ruch parzysty = gracz 2
     i = 1
     gracze = gra.wybierzZnakDlaGracza()
     #print(gracze)
