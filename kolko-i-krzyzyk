@@ -1,3 +1,6 @@
+import logging
+logging.basicConfig(filename='app.log', filemode='a', format='%(asctime)s %(name)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO)
+
 
 class KolkoiKrzyzyk:
 
@@ -35,7 +38,6 @@ class KolkoiKrzyzyk:
             linia = plik.readline()
         plik.close()
         listaTemp = list(odczytane[2].split(','))
-        print(listaTemp)
         self.tablica = listaTemp
         if odczytane[0] == "X":
             self.gracz1 = "X"
@@ -50,11 +52,11 @@ class KolkoiKrzyzyk:
         while True:
             if self.gracz1.upper() == "X":
                 self.gracz2 = "O"
-                print("Twój gracz to X, a gracza2 to O")
+                print("Twój gracz1 to X, a gracza2 to O")
                 return self.gracz1.upper(), self.gracz2
             elif self.gracz1.upper() == "O":
                 self.gracz2 = "X"
-                print("Twój gracz to O, a gracza2 to X")
+                print("Twój gracz1 to O, a gracza2 to X")
                 return self.gracz1.upper(), self.gracz2
             else:
                 input("Wybierz znak gracza X lub O: ")
@@ -105,11 +107,11 @@ class KolkoiKrzyzyk:
         self.wstawZnakNaPlanszy(x, znak, i)
 
     def wstawZnakNaPlanszy(self, x, znak, i):
-
         if (self.sprawdzCzyPoleZajete(x) == True):
             self.wprowadzNumerPola(znak, i)
         self.podmienZnakNaTablicy(x, znak)
         self.wydrukujPlansze(self.tablica)
+        logging.info('tura %s, znak %s, numer pola %s', str(i), znak, str(x))
         self.zapiszDoPliku()
         if (self.sprawdzWygrana(znak) == True):
             print("Wygrał gracz: ", znak)
@@ -128,6 +130,7 @@ class KolkoiKrzyzyk:
 
     def czyWszystkiePolaZajete(self):
         return len([x for x in self.tablica if x == '*']) == 1
+    #*XOXOXOXOO
 
 
 if __name__ == "__main__": #metoda systemowa
@@ -138,9 +141,9 @@ if __name__ == "__main__": #metoda systemowa
         #print(gra.tablica)
         gracze = []
         odczytane = gra.odczytajZPliku()
-        i = odczytane[0]
-        gracze.append(odczytane[1])
-        gracze.append(odczytane[2])
+        i = odczytane[0] #numer tury
+        gracze.append(odczytane[1])#jaki znak ma gracz1
+        gracze.append(odczytane[2]) #jaki znak ma gracz2
     else:
         i = 1
         gracze = gra.wybierzZnakDlaGracza()
